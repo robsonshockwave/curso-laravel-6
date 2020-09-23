@@ -1,0 +1,132 @@
+    <!--Aula Estruturas de Controle Blade-->
+    <!--verifica se o valor é igual a 123-->
+    @if($teste === '123') <!-- estrutura de if -->
+        <p>É igual no if,</p>
+    @elseif($teste == 123)
+        <p>É igual a 123 no if,</p>
+    @else
+        <p>É diferente no if,</p>
+    @endif
+
+    @unless($teste === '123')<!--aqui só entra se for falso-->
+        <p>Falso, entrou no unless,</p>
+    @else 
+        <p>Verdadeiro, n entrou no unless,</p>
+    @endunless
+
+    @isset($teste2)<!--aqui verifica se a variável existe-->
+        Passou no isset,
+        <p>{{$teste2}}</p>
+    @else
+        <p>Não passou no isset,</p>
+    @endisset
+
+    @empty($teste3)<!--aqui verifica se está vazio-->
+        <p>Entrou no empty,</p>
+    @else
+        <p>Não entrou no empty,</p>
+    @endempty
+
+    @auth()<!--aqui verifica a autentificação, se está autentificada-->
+        <p>Entrou no auth, está autentificada</p>
+    @else
+        <p>Não entrou no auth, não está autentificada</p>
+    @endauth<!--Se a pessoa estiver logada mostra a foto dela, caso não, mostra a opção de login-->
+
+    @guest<!--aqui entra só se não estiver autenticado-->
+        <p>Entrou no guest, não está autentificada</p>
+    @else
+        <p>Não entrou no guest, está autentificada
+    @endguest
+    
+    <!--Verificação apenas-->
+    @switch($teste)
+        @case(1)
+            <p>Valor no witch igual a 1</p>
+        @break
+        @case(2)
+            <p>Valor no witch igual a 2</p>
+        @break
+        @default
+            <p>Entrou em nenhum no switch</p>
+    @endswitch
+
+    @switch($teste2)
+        @case(321)
+            Igual 321
+        @break
+        @case(2)
+            Igual 2
+        @break
+        @default
+            É nenhum
+    @endswitch
+
+    <hr/>
+    <!--Estruturas de Repetição Blade-->
+    <!--verifica se exite a variável $teste3
+    poderia verificar se é um array-->
+    @if(isset($products))
+        @foreach ($products as $product)
+            <p class = "@if ($loop->last) last @endif">{{$product}}</p>
+            <!--<p>{ {$product}}</p>-->
+        @endforeach
+    @endif
+    <hr/>
+
+    <!--o for else não precisa de verificações de acordo com o brother-->
+        @forelse ($products as $product)
+            <!--<p>{ {$product}}</p>-->
+            <p class = "@if ($loop->first) last @endif">{{$product}}</p>
+        @empty
+        <!--empty verifica se existe algum conteúdo, se tiver vazio ele cai aqui, se não imprime ali em cima-->
+            <p>Não existem produtos cadastrados</p>
+        @endforelse
+
+    @endsection
+
+<!-- ficou todo desorganizado pq não definimos uma estrutura própria para ele, como visto na aula de Stacks Blade 
+    <style>
+        .last {background: rgba(255, 0, 76, 0.8);}
+    </style> -->
+<hr>
+
+<!--Aula Includes, Components e Slots no Blade-->
+<!--Includes-->
+<!--pode passar um array pra com o conteúdo que quer que exiba, se passar array vazio dará erro-->
+@Include('admin.includes.alerts', ['content' => 'Alerta de preços de produtos'])
+
+<!-- Components e Slots -->
+@component('admin.components.card')
+<!-- pra passar no corpo -->
+    Um card de exemplo
+<!-- pra passar no título -->
+    @slot('title')
+        <h1>Título Card</h1>
+    @endslot
+@endcomponent
+
+<!--Aula Stacks Blade-->
+<!--poderia ser outros arquivos que já estivessem dentro do projeto tbm, como .css etc, para colocar aqui embaixo \/ -->
+@push('styles') <!----------- ATENÇÃO AO PARÂMETRO DENTRO DO PARÊNTESE-->
+    <style>
+        .last {background: rgba(255, 81, 0, 0.8);}
+    </style>
+@endpush
+
+<!--se quiser colocar um js específico nessa página aqui, ele é útil só pra ela, pra não ter que ficar carregando todo projeto-->
+@push('scripts') <!----------- ATENÇÃO AO PARÂMETRO DENTRO DO PARÊNTESE-->
+    <script>
+        document.body.style.background = '#999' <!-- vai mudar a cor do background da página-->
+    </script>
+@endpush
+
+<!--Aula Formulários (csrf)-->
+<!--para formar o/um link
+<a href="/">Cadastrar</a>
+coloca   /\ o nome da rota -->
+<a href="{{ route('products.create')}}">Cadastrar</a>
+<!--SE LIGA, PEGA ESSAS /\ REFERÊNCIAS LÁ EM ROUTES web.php-->
+<!--vai fazer que fique na página inicial e lá gere um link para uma rota de cadastrar produtos-->
+
+

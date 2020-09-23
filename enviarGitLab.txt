@@ -1,0 +1,11 @@
+cd C:\Docker\cursos\laravel-repositories
+
+git init
+
+git status
+
+git add --all
+
+git commit -m "mensagem"
+
+git push -u origin master
